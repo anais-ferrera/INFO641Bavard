@@ -1,43 +1,52 @@
 import java.util.ArrayList;
-
 public class Concierge {
+	private ArrayList<PapotageListener> listeEcouteurs;
 	
-	private String nom;
-	private ArrayList <Bavard> listeBavards;
-	
-	
-	public Concierge(String nom) {
-		this.nom=nom;
-		this.listeBavards = new ArrayList <Bavard>();
-	
+	public Concierge() {
+		this.listeEcouteurs=new ArrayList<PapotageListener>();
 	}
 	
-	public void addBavard(Bavard b){
-        listeBavards.add(b);
-    }
+	public void addEcouteurs(PapotageListener b){
+		listeEcouteurs.add(b);
+	}
+	
+	public void removeEcouteur(PapotageListener b){
+		listeEcouteurs.remove(b);
+	}
+	
+	public Bavard generateBavard(String nom){
+		Bavard b = new Bavard(nom);
+		this.addEcouteurs(b);
+		return b;
+		
+	}
+	
+	public void connecteBavard(Bavard b) {
+		b.setConnecte(true);
+	}
+	
+//	public void envoieMessage(PapotageListener expediteur) {
+	//	for (PapotageEvent message : expediteur.getMessagesEnvoyes()) {
+		//	for (PapotageListener listener : this.listeEcouteurs) {
+			//	listener.afficheMessageRecus();
+//	}
+	//	}
+//	}
+	
+	public void transmitPapotageEvent(PapotageEvent mess) {
+		
+		for (PapotageListener elem:listeEcouteurs) {
+			elem.afficheMessage(mess);			
+		}
+	}
 
-    public void removeEcouteur(Bavard b){
-        listeBavards.remove(b);
-    }
+	public ArrayList<PapotageListener> getListeBavards() {
+		return listeEcouteurs;
+	}
 
-    public void generateBavard(String nom){
-        Bavard b = new Bavard(nom);
-        this.addBavard(b);
-
-    }
-    
-    public void bavardConnecte () {
-    	for (Bavard b : this.listeBavards) {
-    		System.out.println(b.getNom()+"est connecte");
-    	}
-    }
-
-    public void envoieMessage(PapotageListener expediteur) {
-        for (PapotageEvent message : expediteur.getMessagesEnvoyes()) {
-            for (PapotageListener listener : this.listeBavards) {
-                listener.afficheMessageRecus();
-            }
-        }
-    }
-
+	public void setListeBavards(ArrayList<PapotageListener> le) {
+		this.listeEcouteurs = le;
+	}
+	
+	
 }

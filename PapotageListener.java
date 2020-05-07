@@ -5,6 +5,7 @@ public interface PapotageListener {
 	public void removeEvent(PapotageEvent pe);
 	public void afficheEvent(PapotageEvent pe);
 	public ArrayList<PapotageEvent> getMessagesEnvoyes();
-    public void afficheMessageRecus();
-		 
+	public void afficheMessage(PapotageEvent message);
+	public boolean isConnecte();
+	public String getNom();
 }
