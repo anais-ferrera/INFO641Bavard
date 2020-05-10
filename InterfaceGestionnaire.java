@@ -3,76 +3,116 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 
 
 public class InterfaceGestionnaire extends JFrame implements ActionListener {
 	private Concierge concierge;
-	
-	private JPanel conteneur1 = new JPanel();
-	private JPanel conteneur2 = new JPanel();
-	
-	private JLabel labelDiscussion = new JLabel("<html><h1>Discussion :</h1></html>");
-	private String discussion="<h1>Discussion :</h1>";
-
-	private JLabel labelConnectes = new JLabel("<h2>Bavards connectés</h2>");
-	
+	private JPanel panel1 = new JPanel();
+	private JLabel labelDiscussion = new JLabel("Toutes les discussions :");
+	private String message = "";
+	private JLabel labelConnectes = new JLabel("Bavards :");	
 	private JButton boutonNewb = new JButton("Nouveau bavard");
-	
-	
+	private JTextArea zoneMessages = new JTextArea(5, 20);
+	private JTextArea zoneBConnectes = new JTextArea(5, 20);
+	private InterfaceConnection iConnec;
+
 	
 	public InterfaceGestionnaire() {
 		super();
-	
-	//definition du titre, de la taille et de la position de la fenetre
-		setTitle("Fenetre du concierge");
-		setSize(400, 900);
-		setLocation(1450, 50);
 		
+		// Definition du titre et de la position de la fenetre
+		setTitle("Fenetre du concierge");
+		setLocation(1450, 200);
+			
 		boutonNewb.addActionListener(this);
 		boutonNewb.setActionCommand("newBavard");
+
+		// Creation du container
+		Container mainContainer = this.getContentPane();
+		mainContainer.add(panel1);
 		
-		this.getContentPane().setLayout(new BoxLayout(this.getContentPane(),BoxLayout.PAGE_AXIS));
+		// Creation des bordures
+		Border border1=  BorderFactory.createEmptyBorder(30,35,30,35);
+		Border border2=  BorderFactory.createEmptyBorder(20,45,20,45);
 		
-		conteneur1.add(labelDiscussion, BorderLayout.SOUTH);
-		this.getContentPane().add(conteneur1);
+		// Creation du Layout
+		BoxLayout layout = new BoxLayout(panel1,BoxLayout.Y_AXIS);
 		
-		conteneur2.add(labelConnectes);
-		conteneur2.add(boutonNewb, BorderLayout.SOUTH);
-		this.getContentPane().add(conteneur2);
+		// Mise en place des labels
+		labelDiscussion.setForeground(Color.blue);
+	    Border border = LineBorder.createGrayLineBorder();
+		labelDiscussion.setBorder(border);
 		
+		// Creation de la zone Messages
+		JScrollPane scrollPane2 = new JScrollPane(this.zoneMessages); 
+		scrollPane2.setBorder(border2);
+		this.zoneMessages.setEditable(false);
+		
+		// Creation de la zone Bavards Connectes
+		JScrollPane scrollPane = new JScrollPane(this.zoneBConnectes); 
+		scrollPane.setBorder(border2);
+		zoneBConnectes.setEditable(false);
+		
+		// Centrage des elements 
+		labelDiscussion.setAlignmentX(Component.CENTER_ALIGNMENT);
+		this.zoneMessages.setAlignmentX(Component.CENTER_ALIGNMENT);
+		this.zoneBConnectes.setAlignmentX(Component.CENTER_ALIGNMENT);
+		scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
+		boutonNewb.setAlignmentX(Component.CENTER_ALIGNMENT);
+		labelConnectes.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		// Mise en place de panel1
+		panel1.setBorder(border1);
+		panel1.setLayout(layout);
+		panel1.add(labelDiscussion);
+		panel1.add(scrollPane2);
+		panel1.add(labelConnectes);
+		panel1.add(scrollPane);
+		panel1.add(boutonNewb);
+		
+		// Creation de la fenetre connection
+		InterfaceConnection iConnec = new InterfaceConnection();
+		iConnec.setIg(this);
+		
+		
+		pack();
 		setVisible(true);
-		
+			
 	}
+
 	
 	
 	
 	public void actionPerformed(ActionEvent e) {
 		//si on appui sur le bouton nouveau bavard
 		if (e.getActionCommand().equals("newBavard")) {
-			new InterfaceBavard();
+			InterfaceCreationBavard icf = new InterfaceCreationBavard();
+			icf.setFc(this);
+			icf.setConcierge(concierge);
 		}
 	}
 	
 	
 	public void afficheMess(PapotageEvent mess) {
-		discussion = discussion + "<p>" + mess.getSujet()+" : "+mess.getCorps()+"</p>";
-		labelDiscussion.setText("<html>" + discussion + "</html>");
+		this.message = this.message + mess.getSujet()+" : "+mess.getCorps();
+		zoneMessages.setText(message);
 	}
 	
 	
 	public void afficheConnectes() {
-		String a ="<h2>Bavards connectés</h2>";
+		System.out.println("cc"+this.getConcierge().getListeBavards());
+		String etatBavards="";
 		for (PapotageListener bavard : concierge.getListeBavards()) {
-			if (bavard.isConnecte()==true) {
-				a = a + "<p>" + bavard.getNom() + "</p>";
-			}
+			etatBavards=etatBavards + bavard.getNom() + " : " + bavard.getEtat() + "\n" ;
 		}
-		labelConnectes.setText("<html>" + a + "</html>");
+		zoneBConnectes.setText(etatBavards);
 	}
 
 
-//getters et setters
+	// Getters et Setters
 	public Concierge getConcierge() {
 		return concierge;
 	}

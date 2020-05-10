@@ -4,6 +4,7 @@ public class Bavard implements PapotageListener {
 	private ArrayList<PapotageEvent> messagesEnvoyes;
 	private ArrayList<PapotageEvent> messagesRecus;
 	private boolean connecte = false;
+	private InterfaceBavard interfBavard = null;
 	
 	public Bavard(String nom){
 		this.messagesEnvoyes = new ArrayList<PapotageEvent>();
@@ -48,6 +49,18 @@ public class Bavard implements PapotageListener {
 
 	public void setConnecte(boolean connecte) {
 		this.connecte = connecte;
+	}
+
+	public void setInterfBavard(InterfaceBavard interfBavard) {
+		this.interfBavard = interfBavard;
+	}
+	
+	public String getEtat() {
+		if (this.connecte) {
+			return "en ligne";
+		}else {
+			return "hors ligne";
+		}
 	}
 	
 	

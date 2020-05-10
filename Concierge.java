@@ -21,8 +21,12 @@ public class Concierge {
 		
 	}
 	
-	public void connecteBavard(Bavard b) {
+	public void connecteBavard(PapotageListener b) {
 		b.setConnecte(true);
+	}
+
+	public void deconnecteBavard(Bavard b) {
+		b.setConnecte(false);
 	}
 	
 //	public void envoieMessage(PapotageListener expediteur) {

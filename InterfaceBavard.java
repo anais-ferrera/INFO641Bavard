@@ -1,70 +1,84 @@
 import java.awt.BorderLayout;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
-
 public class InterfaceBavard extends JFrame implements ActionListener {
-	private JButton boutonConn = new JButton("Connexion");
-	private JButton boutonAnnuler = new JButton("Annuler");
 	
-	private JLabel label = new JLabel("Nom du bavard");
-	private JTextField corps = new JTextField("",10);
-	
-	private JPanel conteneur = new JPanel();
-	
-	public static Concierge gestionnaire = null;
-	
+	private JFrame frame = new JFrame();
+	private JPanel pan = new JPanel();
+	private JButton boutonEnvoyer = new JButton("Envoyer");
+	private JButton boutonDeco = new JButton("Deconnexion");
+	private JLabel labelSujet = new JLabel("Sujet :");
+	private JLabel labelMessage = new JLabel("Corps :");
+	private JTextField sujetMessage = new JTextField("",20);
+	private JTextField message = new JTextField("",50);
+	private Bavard bavard;
+	private Concierge concierge;
 
+
+	private String fils_discussion ="";
+	private JLabel discussion = new JLabel("Message");
+	
 	public InterfaceBavard() {
 		super();
+		System.out.println("cc");
+		this.setTitle("Messagerie");
+		this.setSize(800,500);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		
-		setTitle("Connexion");
-		setSize(250, 100);
-		setLocationRelativeTo(null);
+		pan.add(discussion);
+		pan.add(labelSujet);
+		sujetMessage.addActionListener(this);
+		pan.add(sujetMessage);
 		
-		// ajout des boutons comme ecouteurs
-		boutonConn.addActionListener(this);  
-		boutonConn.setActionCommand("signIn");
+		pan.add(labelMessage);
+		message.addActionListener(this);
+		pan.add(message);
 		
-		boutonAnnuler.addActionListener(this);
-		boutonAnnuler.setActionCommand("close");
+		boutonEnvoyer.addActionListener(this);
+	    boutonEnvoyer.setActionCommand("envoyer");
+		pan.add(boutonEnvoyer, BorderLayout.SOUTH);
 		
-		conteneur.add(label, BorderLayout.SOUTH);
-		conteneur.add(corps, BorderLayout.SOUTH);
-		conteneur.add(boutonConn, BorderLayout.SOUTH);
-		conteneur.add(boutonAnnuler, BorderLayout.SOUTH);
-		setContentPane(conteneur);
-
-		setVisible(true);
+		boutonDeco.addActionListener(this);
+	    boutonDeco.setActionCommand("deconnexion");
+		pan.add(boutonDeco, BorderLayout.SOUTH);
 		
+		 this.setContentPane(pan);
+		 this.setVisible(true);
+		 
 	}
 	
-	
 	public void actionPerformed(ActionEvent e) {
-
-			if (e.getActionCommand().equals("signIn")){
-				
-				String nomBavard = corps.getText();
-				Bavard b = gestionnaire.generateBavard(nomBavard); // cree un nouveau bavard ayant le nom rentré dans la fenetre
-				gestionnaire.connecteBavard(b); // connecte le bavard b1
-				
-				
-				this.dispose(); //ferme la fenetre de connexion
-
-				FenetreDialog fd = new FenetreDialog();
-				b.setFenetreDialog(fd);
-				fd.setBavard(b);
-				
-				fd.setTitle("Fenetre dialogue de " + b.getNom());
-				fd.setVisible(true);
-			}
-			
-			if (e.getActionCommand().equals("close")) {
-				this.dispose(); //ferme la fenetre
-			}
-		}
+	    if(e.getActionCommand().equals("boutonEnvoyer")) {
+	    	String sujetTexte = sujetMessage.getText();
+	    	String texte = message.getText();
+	    	bavard.envoyerMessage(sujetTexte, texte);
+	    }
+	    
+	    if(e.getActionCommand().equals("deconnexion")) {
+	    	this.concierge.deconnecteBavard(bavard);
+	    	concierge.removeEcouteur(bavard);
+	    	this.dispose();
+	    }
+	}
 	
-	
+	public void setConcierge(Concierge concierge) {
+		this.concierge = concierge;
+	}
 
+	public void afficheMess(PapotageEvent mess) {
+		fils_discussion = fils_discussion +"<p>"+mess.getSujet()+" : "+mess.getCorps()+"</p>";
+		discussion.setText("<html>"+ fils_discussion +"<br><h3>Nouveau message :</h3></html>");
+	}
+	
+	public Bavard getBavard() {
+		return bavard;
+	}
+
+
+	public void setBavard(Bavard b) {
+		this.bavard = b;
+	}
 }

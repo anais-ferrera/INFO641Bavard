@@ -8,4 +8,7 @@ public interface PapotageListener {
 	public void afficheMessage(PapotageEvent message);
 	public boolean isConnecte();
 	public String getNom();
+	public String getEtat();
+	public void setConnecte(boolean connecte); 
+	public void setInterfBavard(InterfaceBavard interfBavard);
 }
