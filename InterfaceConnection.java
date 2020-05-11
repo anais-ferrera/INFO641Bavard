@@ -59,16 +59,15 @@ public class InterfaceConnection extends JFrame implements ActionListener {
 			
 			String nomBavard = corps.getText();
 			for (PapotageListener bavard : ig.getConcierge().getListeBavards()) {
-				// ICI Y A UN PROBLEME AVEC LE ==
-				System.out.println(nomBavard +" et "+ bavard.getNom());
-				System.out.println(nomBavard == bavard.getNom());
-				if (nomBavard == bavard.getNom()) {
+				System.out.println(nomBavard.equals(bavard.getNom()));
+				if (nomBavard.equals(bavard.getNom())) {
 					ig.getConcierge().connecteBavard(bavard); // connecte le bavard b						
 					InterfaceBavard id = new InterfaceBavard();
 					bavard.setInterfBavard(id);
+					corps.setText("");
 					id.setBavard((Bavard) bavard);
 					id.setConcierge(concierge);
-						
+					
 					id.setTitle("Fenetre dialogue de " + bavard.getNom());
 					id.setVisible(true);
 						
