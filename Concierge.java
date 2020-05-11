@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 public class Concierge {
 	private ArrayList<PapotageListener> listeEcouteurs;
+	private InterfaceGestionnaire ig;
 	
 	public Concierge() {
 		this.listeEcouteurs=new ArrayList<PapotageListener>();
@@ -17,16 +18,19 @@ public class Concierge {
 	public Bavard generateBavard(String nom){
 		Bavard b = new Bavard(nom);
 		this.addEcouteurs(b);
+		this.ig.afficheConnectes();
 		return b;
 		
 	}
 	
 	public void connecteBavard(PapotageListener b) {
 		b.setConnecte(true);
+		this.ig.afficheConnectes();
 	}
 
 	public void deconnecteBavard(Bavard b) {
 		b.setConnecte(false);
+		this.ig.afficheConnectes();
 	}
 	
 //	public void envoieMessage(PapotageListener expediteur) {
@@ -51,6 +55,11 @@ public class Concierge {
 	public void setListeBavards(ArrayList<PapotageListener> le) {
 		this.listeEcouteurs = le;
 	}
+
+	public void setIg(InterfaceGestionnaire ig) {
+		this.ig = ig;
+	}
+	
 	
 	
 }

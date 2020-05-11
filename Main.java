@@ -6,8 +6,7 @@ public class Main {
 		Concierge c = new Concierge();
 
 		//ouverture de la fenetre du concierge 
-		InterfaceGestionnaire ig = new InterfaceGestionnaire();
-		ig.setConcierge(c);
+		InterfaceGestionnaire ig = new InterfaceGestionnaire(c);
 		
 		
 	}
