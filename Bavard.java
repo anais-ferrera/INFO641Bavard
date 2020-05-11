@@ -55,13 +55,6 @@ public class Bavard implements PapotageListener {
 		this.interfBavard = interfBavard;
 	}
 	
-	public String getEtat() {
-		if (this.connecte) {
-			return "en ligne";
-		}else {
-			return "hors ligne";
-		}
-	}
 	
 	
 	

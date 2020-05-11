@@ -10,6 +10,8 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 public class InterfaceMessage extends JFrame implements ActionListener {
+	private JComboBox liste1;
+	private JLabel destinataire = new JLabel("À :");
 	private JLabel sujetMessage = new JLabel("Sujet :");
 	private JTextField zoneSujet = new JTextField("",10);
 	private JLabel corpsMessage = new JLabel("Corps :");	
@@ -41,6 +43,10 @@ public class InterfaceMessage extends JFrame implements ActionListener {
 		this.setSize(800,500);
 		this.setLocationRelativeTo(null);
 		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+		
+		// Mise en place de la liste deroulante 
+		Object[] elements = new Object[]{"Element 1", "Element 2", "Element 3", "Element 4", "Element 5"};		 
+		liste1 = new JComboBox(elements);
 			
 		// Mise en place des deux boutons 
 		boutonEnvoyer.addActionListener(this);
@@ -62,8 +68,10 @@ public class InterfaceMessage extends JFrame implements ActionListener {
 		
 		// Mise en place des labels
 		Font font = new Font("Arial",Font.BOLD,20);
+		destinataire.setFont(font);
 		sujetMessage.setFont(font);
 		corpsMessage.setFont(font);
+		destinataire.setForeground(Color.pink);
 		sujetMessage.setForeground(Color.orange);
 		corpsMessage.setForeground(Color.red);
 		
@@ -73,6 +81,7 @@ public class InterfaceMessage extends JFrame implements ActionListener {
 		//this.corpsMessage.setEditable(false);
 		
 		// Centrage des elements 
+		destinataire.setAlignmentX(Component.CENTER_ALIGNMENT);
 		sujetMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
 		corpsMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
 		//scrollPane1.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -82,6 +91,8 @@ public class InterfaceMessage extends JFrame implements ActionListener {
 		// Mise en place de panel1
 		panel1.setBorder(border1);
 		panel1.setLayout(layout);
+		panel1.add(destinataire);
+		panel1.add(liste1);
 		panel1.add(sujetMessage);
 		panel1.add(zoneSujet);
 		panel1.add(corpsMessage);
@@ -97,7 +108,8 @@ public class InterfaceMessage extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 	    if(e.getActionCommand().equals("envoyer")) {
-	    	
+	    	Object selected = this.liste1.getSelectedItem();
+	    	System.out.println(selected);
 	    }
 	    
 	    if(e.getActionCommand().equals("annuler")) {

@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
 
 
 
@@ -23,7 +25,9 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 	private JTextField corps = new JTextField("",10);
 	
 	private JTextArea zoneMessages = new JTextArea(15, 20);
-	private JTextArea zoneBConnectes = new JTextArea(5, 20);
+	//private JTextArea zoneBConnectes = new JTextArea(5, 20);
+	JEditorPane jEditorPane = new JEditorPane();
+	HTMLEditorKit kit = new HTMLEditorKit();
 	
 	private JButton boutonNewb = new JButton("Nouveau bavard");
 	
@@ -35,7 +39,30 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 		// Definition du titre et de la position de la fenetre
 		setTitle("Fenetre du concierge");
 		setLocation(1250, 200);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
+		// HTML
+		jEditorPane.setEditable(false);
+		JScrollPane scrollPane = new JScrollPane(jEditorPane);
+		jEditorPane.setEditorKit(kit);
+		
+		//StyleSheet styleSheet = kit.getStyleSheet();
+        //styleSheet.addRule("body {color:#000; font-family:times; margin: 4px; }");
+        //styleSheet.addRule("h1 {display:inline; color: green; font : 10px monaco;}");
+        //styleSheet.addRule("h2 {display:inline; color: red; font : 10px monaco;}");
+        
+        String htmlString = "<html>"
+                + "<body>"
+                + "<p><center><font color=#666666>Il n'y a pas encore d'utilisateur</font></center></p>"
+                + "<p></p>"
+                + "<p></p>"
+                + "</body>";
+        
+        jEditorPane.setText(htmlString);
+        
+        
+        
+		
 		// Ajout des boutons comme ecouteurs
 		boutonNewb.addActionListener(this);
 		boutonNewb.setActionCommand("createBavard");
@@ -75,15 +102,15 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 		this.zoneMessages.setEditable(false);
 		
 		// Creation de la zone Bavards Connectes
-		JScrollPane scrollPane = new JScrollPane(this.zoneBConnectes); 
-		scrollPane.setBorder(border2);
-		zoneBConnectes.setEditable(false);
+		//JScrollPane scrollPane = new JScrollPane(this.zoneBConnectes); 
+		//scrollPane.setBorder(border2);
+		//zoneBConnectes.setEditable(false);
 		
 		
 		// Centrage des elements 
 		labelDiscussion.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.zoneMessages.setAlignmentX(Component.CENTER_ALIGNMENT);
-		this.zoneBConnectes.setAlignmentX(Component.CENTER_ALIGNMENT);
+		//this.zoneBConnectes.setAlignmentX(Component.CENTER_ALIGNMENT);
 		scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 		scrollPane2.setAlignmentX(Component.CENTER_ALIGNMENT);
 		boutonNewb.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -97,7 +124,8 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 		panel1.add(labelDiscussion);
 		panel1.add(scrollPane2);
 		panel1.add(labelConnectes);
-		panel1.add(scrollPane);
+		//panel1.add(scrollPane);
+		panel1.add(scrollPane, BorderLayout.CENTER);
 		panel1.add(panel2);
 		
 		// On relie le concierge et l'interface du gestionnaire
@@ -135,11 +163,21 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 	
 	// Permet d'afficher l'état (en ligne ou hors ligne) de tous les bavards créés dans la zone de Texte zoneBConnectes
 	public void afficheConnectes() {
-		String etatBavards="";
+		//String etatBavards="";
+		String htmlString = "<html>\n"
+                + "<body>";
+        
 		for (PapotageListener bavard : concierge.getListeBavards()) {
-			etatBavards=etatBavards + bavard.getNom() + " : " + bavard.getEtat() + "\n" ;
+			//etatBavards = "<html>" + "de" + "</html>";
+			//etatBavards="<html>"+etatBavards + bavard.getNom() + " : <FONT color=\"red\">toto</FONT>" + bavard.getEtat() + "\n"+"</html>" ;
+			if (bavard.isConnecte()) {
+				htmlString +="<p>"+ bavard.getNom() + " : " + "<font color=green>en ligne</font></p>"; 
+			}else {
+				htmlString += "<p>"+ bavard.getNom() + " : " + "<font color=red>hors ligne</font></p>"; 
+			}
 		}
-		zoneBConnectes.setText(etatBavards);
+		htmlString += "</body></html>";
+		jEditorPane.setText(htmlString);
 	}
 
 	// Getters et Setters

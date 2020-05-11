@@ -65,8 +65,9 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 		Font font = new Font("Arial",Font.BOLD,20);
 		labelMessagesR.setFont(font);
 		labelMessagesE.setFont(font);
+		Color c1 = new Color(150, 10, 20);
 		labelMessagesR.setForeground(Color.orange);
-		labelMessagesE.setForeground(Color.red);
+		labelMessagesE.setForeground(c1);
 		
 		// Creation de la zone Messages Recus
 		JScrollPane scrollPane1 = new JScrollPane(this.zoneMessagesR); 
@@ -113,6 +114,11 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 	    	this.concierge.deconnecteBavard(bavard);
 	    	//concierge.removeEcouteur(bavard);
 	    	this.dispose();
+	    if(e.getActionCommand().equals(EXIT_ON_CLOSE)) {
+	    	this.concierge.deconnecteBavard(bavard);
+	    	//concierge.removeEcouteur(bavard);
+	    	this.dispose();
+	    }
 	    }
 	}
 	

@@ -25,6 +25,7 @@ public class InterfaceConnection extends JFrame implements ActionListener {
 		
 		setTitle("Connexion");
 		setLocation(250, 400);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		Font font = new Font("Arial",Font.BOLD,14);
 		label.setFont(font);
