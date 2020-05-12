@@ -1,16 +1,19 @@
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 
-public class InterfaceMessage extends JFrame implements ActionListener {
-	private JComboBox liste1;
+public class InterfaceMessage extends JFrame implements ActionListener{
+	
+
+	
+	private JComboBox liste1 = new JComboBox();
 	private JLabel destinataire = new JLabel("À :");
 	private JLabel sujetMessage = new JLabel("Sujet :");
 	private JTextField zoneSujet = new JTextField("",10);
@@ -29,14 +32,15 @@ public class InterfaceMessage extends JFrame implements ActionListener {
 	private Bavard bavard;
 	private Concierge concierge;
 	private InterfaceBavard iB;
-
+	
 	//private String fils_discussion ="";
 	//private JLabel discussion = new JLabel("Message");
 	
-	public InterfaceMessage(Bavard bavard) {
+	public InterfaceMessage(Bavard bavard, Concierge concierge) {
 		super();
 		
 		this.bavard = bavard;
+		this.concierge=concierge;
 		
 		// Definition du titre et de la position de la fenetre
 		setTitle("Nouveau Message");
@@ -45,8 +49,11 @@ public class InterfaceMessage extends JFrame implements ActionListener {
 		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		
 		// Mise en place de la liste deroulante 
-		Object[] elements = new Object[]{"Element 1", "Element 2", "Element 3", "Element 4", "Element 5"};		 
-		liste1 = new JComboBox(elements);
+		// On parcourt la liste des bavards et on ajoute dans la liste deroulante chaque bavard
+		for(PapotageListener pl : this.concierge.getListeBavards()) {
+			liste1.addItem(pl.getNom());
+		}
+		
 			
 		// Mise en place des deux boutons 
 		boutonEnvoyer.addActionListener(this);
@@ -108,8 +115,10 @@ public class InterfaceMessage extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 	    if(e.getActionCommand().equals("envoyer")) {
+	    	
 	    	Object selected = this.liste1.getSelectedItem();
 	    	System.out.println(selected);
+	    	
 	    }
 	    
 	    if(e.getActionCommand().equals("annuler")) {
@@ -124,7 +133,4 @@ public class InterfaceMessage extends JFrame implements ActionListener {
 	public void setiB(InterfaceBavard iB) {
 		this.iB = iB;
 	}
-
-	
-	
 }
