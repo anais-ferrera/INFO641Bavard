@@ -162,12 +162,16 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 	public void afficheConnectes() {
 		String htmlString = "<html>"
                 			+ "<body>";
-		for (PapotageListener bavard : concierge.getListeBavards()) {
-			if (!bavard.getNom().equals(this.bavard.getNom())){
-				if (bavard.isConnecte()) {
-					htmlString +="<p>"+ bavard.getNom() + " : " + "<font color=green>en ligne</font></p>"; 
-				}else {
-					htmlString += "<p>"+ bavard.getNom() + " : " + "<font color=red>hors ligne</font></p>"; 
+		if (concierge.getListeBavards().size()==1) {
+			htmlString += "<p><center><font color=#666666>Il n'y a pas encore d'utilisateur</font></center></p>";
+		}else {
+			for (PapotageListener bavard : concierge.getListeBavards()) {
+				if (!bavard.getNom().equals(this.bavard.getNom())){
+					if (bavard.isConnecte()) {
+						htmlString +="<p>"+ bavard.getNom() + " : " + "<font color=green>en ligne</font></p>"; 
+					}else {
+						htmlString += "<p>"+ bavard.getNom() + " : " + "<font color=red>hors ligne</font></p>"; 
+					}
 				}
 			}
 		}
