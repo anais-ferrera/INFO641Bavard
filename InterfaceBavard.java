@@ -36,12 +36,13 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 	public InterfaceBavard (Bavard b){
 		super();
 		this.bavard=b;
+
 		
 		// Definition du titre et de la position de la fenetre
 		this.setTitle("Messagerie de "+this.bavard.getNom());
 		this.setSize(800,500);
 		this.setLocation(1050,200);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); 
 		
 		// Mise en place des deux boutons
 		boutonMessage.addActionListener(this);
@@ -100,7 +101,7 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 	 	panel.add(boutonDeco);
 	 		
 	 	pack();
-		 this.setVisible(true);
+		this.setVisible(false);
 		 
 	}
 	
@@ -113,12 +114,6 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 	    }
 	    // Concierge deconnecte le bavard avec le bouton deconnexion
 	    if(e.getActionCommand().equals("deconnexion")) {
-	    	this.concierge.deconnecteBavard(bavard);
-	    	//concierge.removeEcouteur(bavard);
-	    	this.dispose();
-	    }
-	    // Si le bavard ferme la fenetre on deconnecte le bavard
-	    if(e.getActionCommand().equals(EXIT_ON_CLOSE)) {
 	    	this.concierge.deconnecteBavard(bavard);
 	    	//concierge.removeEcouteur(bavard);
 	    	this.dispose();

@@ -150,7 +150,12 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 			if (nomBavard.isEmpty()) { // Verifie qu'un nom soit rentré
 			}
 			else {
-			concierge.generateBavard(nomBavard); // cree un nouveau bavard ayant le nom rentré dans la fenetre
+			Bavard b = concierge.generateBavard(nomBavard); // cree un nouveau bavard ayant le nom rentré dans la fenetre
+			InterfaceBavard id = new InterfaceBavard(b);
+			b.setInterfBavard(id);
+			id.setBavard(b);
+			id.setConcierge(concierge);
+			b.setIb(id);
 			}
 		}
 	}

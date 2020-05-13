@@ -60,13 +60,8 @@ public class InterfaceConnection extends JFrame implements ActionListener {
 					
 					ig.getConcierge().connecteBavard(bavard); // connecte le bavard b									
 					corps.setText("");
+					bavard.getIb().setVisible(true);
 					
-					InterfaceBavard id = new InterfaceBavard((Bavard)bavard);
-					bavard.setInterfBavard(id);
-					id.setBavard((Bavard) bavard);
-					id.setConcierge(concierge);
-					bavard.setIb(id);
-						
 				}else { // Si le nom rentré ne correspond pas rien ne se passe
 				}
 			}	

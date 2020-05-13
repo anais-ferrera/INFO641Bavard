@@ -51,7 +51,9 @@ public class InterfaceMessage extends JFrame implements ActionListener{
 		// Mise en place de la liste deroulante 
 		// On parcourt la liste des bavards et on ajoute dans la liste deroulante chaque bavard
 		for(PapotageListener pl : this.concierge.getListeBavards()) {
-			liste1.addItem(pl.getNom());
+			//if (pl.isConnecte()) {
+				liste1.addItem(pl.getNom());
+			//}
 		}
 		
 			
