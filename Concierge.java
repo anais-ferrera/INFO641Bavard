@@ -71,4 +71,9 @@ public class Concierge {
 	public void setIg(InterfaceGestionnaire ig) {
 		this.ig=ig;
 	}
+
+	public ArrayList<PapotageListener> getListeEcouteurs() {
+		return listeEcouteurs;
+	}
+
 }

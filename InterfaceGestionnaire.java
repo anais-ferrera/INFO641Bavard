@@ -2,6 +2,8 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
@@ -25,7 +27,6 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 	private JTextField corps = new JTextField("",10);
 	
 	private JTextArea zoneMessages = new JTextArea(15, 20);
-	//private JTextArea zoneBConnectes = new JTextArea(5, 20);
 	JEditorPane jEditorPane = new JEditorPane();
 	HTMLEditorKit kit = new HTMLEditorKit();
 	
@@ -46,10 +47,6 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 		JScrollPane scrollPane = new JScrollPane(jEditorPane);
 		jEditorPane.setEditorKit(kit);
 		
-		//StyleSheet styleSheet = kit.getStyleSheet();
-        //styleSheet.addRule("body {color:#000; font-family:times; margin: 4px; }");
-        //styleSheet.addRule("h1 {display:inline; color: green; font : 10px monaco;}");
-        //styleSheet.addRule("h2 {display:inline; color: red; font : 10px monaco;}");
         
         String htmlString = "<html>"
                 + "<body>"
@@ -93,24 +90,15 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 		labelDiscussion.setForeground(Color.blue.darker().darker());
 		labelConnectes.setForeground(Color.blue);
 		labelNom.setForeground(Color.darkGray);
-	    //Border border = LineBorder.createGrayLineBorder();
-		//labelDiscussion.setBorder(border);
 		
 		// Creation de la zone Messages
 		JScrollPane scrollPane2 = new JScrollPane(this.zoneMessages); 
 		scrollPane2.setBorder(border2);
 		this.zoneMessages.setEditable(false);
 		
-		// Creation de la zone Bavards Connectes
-		//JScrollPane scrollPane = new JScrollPane(this.zoneBConnectes); 
-		//scrollPane.setBorder(border2);
-		//zoneBConnectes.setEditable(false);
-		
-		
 		// Centrage des elements 
 		labelDiscussion.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.zoneMessages.setAlignmentX(Component.CENTER_ALIGNMENT);
-		//this.zoneBConnectes.setAlignmentX(Component.CENTER_ALIGNMENT);
 		scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 		scrollPane2.setAlignmentX(Component.CENTER_ALIGNMENT);
 		boutonNewb.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -124,7 +112,6 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 		panel1.add(labelDiscussion);
 		panel1.add(scrollPane2);
 		panel1.add(labelConnectes);
-		//panel1.add(scrollPane);
 		panel1.add(scrollPane, BorderLayout.CENTER);
 		panel1.add(panel2);
 		
@@ -142,23 +129,29 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 	}
 	
 	// Utilisation des boutons
-	public void actionPerformed(ActionEvent e) {
-		//si on appui sur le bouton nouveau bavard
-		if (e.getActionCommand().equals("createBavard")){
-			
-			String nomBavard = corps.getText();
-			if (nomBavard.isEmpty()) { // Verifie qu'un nom soit rentré
-			}
-			else {
-			Bavard b = concierge.generateBavard(nomBavard); // cree un nouveau bavard ayant le nom rentré dans la fenetre
-			InterfaceBavard id = new InterfaceBavard(b);
-			b.setInterfBavard(id);
-			id.setBavard(b);
-			id.setConcierge(concierge);
-			b.setIb(id);
-			}
-		}
-	}
+    public void actionPerformed(ActionEvent e) {
+        ArrayList<String> listeNoms = new ArrayList<String>();
+        //si on appui sur le bouton nouveau bavard
+        if (e.getActionCommand().equals("createBavard")){
+            for (PapotageListener pl : this.concierge.getListeEcouteurs()) {
+                listeNoms.add(pl.getNom());
+            }
+            String nomBavard = corps.getText();
+            if (nomBavard.isEmpty()) { // Verifie qu'un nom soit rentré
+            	corps.setText("");
+            }else if (listeNoms.contains(nomBavard)) {
+            	corps.setText("");
+            }else {
+	            Bavard b = concierge.generateBavard(nomBavard); // cree un nouveau bavard ayant le nom rentré dans la fenetre
+	            InterfaceBavard id = new InterfaceBavard(b);
+	            corps.setText("");
+	            b.setInterfBavard(id);
+	            id.setBavard(b);
+	            id.setConcierge(concierge);
+	            b.setIb(id);
+            }
+        }
+    }
 	
 	// Permet d'afficher tous les messages envoyés dans la zone de Texte zoneMessages
 	public void afficheMess(PapotageEvent mess, PapotageListener envoyeur, PapotageListener destinataire) {
@@ -168,14 +161,12 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 	
 	// Permet d'afficher l'état (en ligne ou hors ligne) de tous les bavards créés dans la zone de Texte zoneBConnectes
 	public void afficheConnectes() {
-		//String etatBavards="";
 		String htmlString = "<html>\n"
                 + "<body>";
         
 		for (PapotageListener bavard : concierge.getListeBavards()) {
-			//etatBavards = "<html>" + "de" + "</html>";
-			//etatBavards="<html>"+etatBavards + bavard.getNom() + " : <FONT color=\"red\">toto</FONT>" + bavard.getEtat() + "\n"+"</html>" ;
 			if (bavard.isConnecte()) {
+				bavard.getIb().afficheConnectes();
 				htmlString +="<p>"+ bavard.getNom() + " : " + "<font color=green>en ligne</font></p>"; 
 			}else {
 				htmlString += "<p>"+ bavard.getNom() + " : " + "<font color=red>hors ligne</font></p>"; 

@@ -8,11 +8,13 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import javax.swing.text.html.HTMLEditorKit;
 
 public class InterfaceBavard extends JFrame implements ActionListener {
 	
 	private JLabel labelMessagesR = new JLabel("Messages recus :");
 	private JLabel labelMessagesE = new JLabel("Messages envoyes :");
+	private JLabel labelBavard = new JLabel("Bavard :");
 	private String messageR = "";
 	private String messageE = "";
 	private JTextArea zoneMessagesR = new JTextArea(5, 20);
@@ -22,16 +24,13 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 	private JPanel panel = new JPanel();
 	private JButton boutonMessage = new JButton("Nouveau Message");
 	private JButton boutonDeco = new JButton("Deconnexion");
-	/*
-	 * private JLabel labelSujet = new JLabel("Sujet :"); private JLabel
-	 * labelMessage = new JLabel("Corps :"); private JTextField sujetMessage = new
-	 * JTextField("",20); private JTextField message = new JTextField("",50);
-	 */
+	
+	JEditorPane jEditorPane = new JEditorPane();
+	HTMLEditorKit kit = new HTMLEditorKit();
+	
 	private Bavard bavard;
 	private Concierge concierge;
-	
-	//private String fils_discussion ="";
-	//private JLabel discussion = new JLabel("Message");
+
 	
 	public InterfaceBavard (Bavard b){
 		super();
@@ -55,9 +54,27 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 	 	Container mainContainer = this.getContentPane();
 	 	mainContainer.add(this.panel);
 	 	
+		// HTML
+		jEditorPane.setEditable(false);
+		JScrollPane scrollPane = new JScrollPane(jEditorPane);
+		jEditorPane.setEditorKit(kit);
+		
+        
+        String htmlString = "<html>"
+                + "<body>"
+                + "<p></p>"
+                + "<p><center><font color=#666666>Il n'y a pas encore d'utilisateur connecté</font></center></p>"
+                + "<p></p>"
+                + "<p></p>"
+                + "<p></p>"
+                + "</body>";
+        
+        jEditorPane.setText(htmlString);
+	 	
 	    // Creation des bordures
 	 	Border border1=  BorderFactory.createEmptyBorder(30,35,30,35);
 	 	Border border2=  BorderFactory.createEmptyBorder(20,45,20,45);
+	 	Border border3=  BorderFactory.createEmptyBorder(10,10,10,10);
 	 		
 	 	// Creation du Layout
 	 	BoxLayout layout = new BoxLayout(panel,BoxLayout.Y_AXIS);
@@ -65,11 +82,17 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 	    // Mise en place des labels
 	 	Font font = new Font("Arial",Font.BOLD,20);
 	 	labelMessagesR.setFont(font);
+	 	labelBavard.setFont(font);
 	 	labelMessagesE.setFont(font);
 	 	Color c1 = new Color(150, 10, 20);
 	 	labelMessagesR.setForeground(Color.orange);
 	 	labelMessagesE.setForeground(c1);
-	 		
+	 	labelBavard.setForeground(Color.orange);
+	 	
+	 	labelBavard.setBorder(border3);
+	 	labelMessagesE.setBorder(border3);
+	 	scrollPane.setBorder(border3);
+	 	
 	 	// Creation de la zone Messages Recus
 		JScrollPane scrollPane1 = new JScrollPane(this.zoneMessagesR); 
 		scrollPane1.setBorder(border2);
@@ -84,11 +107,13 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 	 	labelMessagesR.setAlignmentX(Component.CENTER_ALIGNMENT);
 	 	this.zoneMessagesR.setAlignmentX(Component.CENTER_ALIGNMENT);
 	 	this.zoneMessagesE.setAlignmentX(Component.CENTER_ALIGNMENT);
+	 	scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 	 	scrollPane1.setAlignmentX(Component.CENTER_ALIGNMENT);
 	 	scrollPane2.setAlignmentX(Component.CENTER_ALIGNMENT);
 	 	boutonMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
 	 	boutonDeco.setAlignmentX(Component.CENTER_ALIGNMENT);
 	 	labelMessagesE.setAlignmentX(Component.CENTER_ALIGNMENT);
+	 	labelBavard.setAlignmentX(Component.CENTER_ALIGNMENT);
 	 		
 	 	// Mise en place de panel1
 	 	panel.setBorder(border1);
@@ -97,6 +122,8 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 	 	panel.add(scrollPane1);
 	 	panel.add(labelMessagesE);
 	 	panel.add(scrollPane2);
+		panel.add(labelBavard);
+	 	panel.add(scrollPane, BorderLayout.CENTER);
 	 	panel.add(boutonMessage);
 	 	panel.add(boutonDeco);
 	 		
@@ -130,6 +157,22 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 	public void afficheMessE(PapotageEvent mess, PapotageListener destinataire) {
 		this.messageE = this.messageE + "À "+destinataire.getNom()+ "\n Sujet : " + mess.getSujet()+ "\n" + mess.getCorps() + "\n\n";
 		zoneMessagesE.setText(this.messageE);
+	}
+	
+	public void afficheConnectes() {
+		String htmlString = "<html>"
+                			+ "<body>";
+		for (PapotageListener bavard : concierge.getListeBavards()) {
+			if (!bavard.getNom().equals(this.bavard.getNom())){
+				if (bavard.isConnecte()) {
+					htmlString +="<p>"+ bavard.getNom() + " : " + "<font color=green>en ligne</font></p>"; 
+				}else {
+					htmlString += "<p>"+ bavard.getNom() + " : " + "<font color=red>hors ligne</font></p>"; 
+				}
+			}
+		}
+		htmlString += "</body></html>";
+		jEditorPane.setText(htmlString);
 	}
 	
 	// Getters et Setters
