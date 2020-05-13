@@ -1,13 +1,13 @@
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 
 public class InterfaceMessage extends JFrame implements ActionListener{
 	
@@ -26,6 +26,7 @@ public class InterfaceMessage extends JFrame implements ActionListener{
 	private JPanel panel1 = new JPanel();
 	private JPanel panel2 = new JPanel();
 	
+	private JButton boutonEnvoyerATous = new JButton("Envoyer a tous");
 	private JButton boutonEnvoyer = new JButton("Envoyer");
 	private JButton boutonAnnuler = new JButton("Annuler");
 	
@@ -50,13 +51,18 @@ public class InterfaceMessage extends JFrame implements ActionListener{
 		
 		// Mise en place de la liste deroulante 
 		// On parcourt la liste des bavards et on ajoute dans la liste deroulante chaque bavard
-		for(PapotageListener pl : this.concierge.getListeBavards()) {
-			//if (pl.isConnecte()) {
-				liste1.addItem(pl.getNom());
-			//}
-		}
-		
-			
+		//for(PapotageListener pl : this.concierge.getListeBavards()) {
+			//liste1.addItem(pl.getNom());
+		//}
+		// Mise en place de la liste deroulante 
+        // On parcourt la liste des bavards et on ajoute dans la liste deroulante chaque bavard
+        for(PapotageListener pl : this.concierge.getListeBavards()) {
+            if (pl.isConnecte()) {
+                liste1.addItem(pl.getNom());
+            }
+        }
+		boutonEnvoyerATous.addActionListener(this);
+		boutonEnvoyerATous.setActionCommand("envoyerATous");
 		// Mise en place des deux boutons 
 		boutonEnvoyer.addActionListener(this);
 		boutonEnvoyer.setActionCommand("envoyer");
@@ -94,6 +100,7 @@ public class InterfaceMessage extends JFrame implements ActionListener{
 		sujetMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
 		corpsMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
 		//scrollPane1.setAlignmentX(Component.CENTER_ALIGNMENT);
+		boutonEnvoyerATous.setAlignmentX(Component.CENTER_ALIGNMENT);
 		boutonEnvoyer.setAlignmentX(Component.CENTER_ALIGNMENT);
 		boutonAnnuler.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
@@ -106,6 +113,7 @@ public class InterfaceMessage extends JFrame implements ActionListener{
 		panel1.add(zoneSujet);
 		panel1.add(corpsMessage);
 		panel1.add(zoneCorps);
+		panel2.add(boutonEnvoyerATous);
 		panel2.add(boutonEnvoyer);
 		panel2.add(boutonAnnuler);
 		panel1.add(panel2);
@@ -120,13 +128,16 @@ public class InterfaceMessage extends JFrame implements ActionListener{
 	    	
 	    	Object selected = this.liste1.getSelectedItem();
 	    	PapotageListener destinataire = getPapotageListenerListe(selected);
-	    	
 	    	this.concierge.envoieMessage(new PapotageEvent(this, zoneSujet.getText(), zoneCorps.getText()),destinataire,bavard);
 	    	this.dispose();
-	    	
 	    }
 	    
 	    if(e.getActionCommand().equals("annuler")) {
+	    	this.dispose();
+	    }
+	    
+	    if(e.getActionCommand().contentEquals("envoyerATous")) {
+	    	this.concierge.envoieMessageATous(new PapotageEvent(this, zoneSujet.getText(), zoneCorps.getText()),this.concierge.getListeBavards(),bavard);
 	    	this.dispose();
 	    }
 	}
