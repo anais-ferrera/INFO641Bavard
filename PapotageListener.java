@@ -10,4 +10,6 @@ public interface PapotageListener {
 	public String getNom();
 	public void setConnecte(boolean connecte); 
 	public void setInterfBavard(InterfaceBavard interfBavard);
+	public void setIb(InterfaceBavard ib);
+	public InterfaceBavard getIb();
 }

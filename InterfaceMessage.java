@@ -1,13 +1,13 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 public class InterfaceMessage extends JFrame implements ActionListener{
 	
@@ -117,6 +117,9 @@ public class InterfaceMessage extends JFrame implements ActionListener{
 	    if(e.getActionCommand().equals("envoyer")) {
 	    	
 	    	Object selected = this.liste1.getSelectedItem();
+	    	PapotageListener destinataire = getPapotageListenerListe(selected);
+	    	
+	    	this.concierge.envoieMessage(new PapotageEvent(this, zoneSujet.getText(), zoneCorps.getText()),destinataire,bavard);
 	    	System.out.println(selected);
 	    	
 	    }
@@ -124,6 +127,15 @@ public class InterfaceMessage extends JFrame implements ActionListener{
 	    if(e.getActionCommand().equals("annuler")) {
 	    	this.dispose();
 	    }
+	}
+	
+	public PapotageListener getPapotageListenerListe(Object selected) {
+		for(PapotageListener pl : this.concierge.getListeBavards()) {
+			if (selected.equals(pl.getNom())){
+				return pl;
+			}
+		}
+		return null;
 	}
 	
 	public void setConcierge(Concierge concierge) {

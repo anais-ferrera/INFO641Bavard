@@ -33,19 +33,10 @@ public class Concierge {
 		this.ig.afficheConnectes();
 	}
 	
-//	public void envoieMessage(PapotageListener expediteur) {
-	//	for (PapotageEvent message : expediteur.getMessagesEnvoyes()) {
-		//	for (PapotageListener listener : this.listeEcouteurs) {
-			//	listener.afficheMessageRecus();
-//	}
-	//	}
-//	}
-	
-	public void transmitPapotageEvent(PapotageEvent mess) {
-		
-		for (PapotageListener elem:listeEcouteurs) {
-			elem.afficheMessage(mess);			
-		}
+	public void envoieMessage(PapotageEvent mess, PapotageListener destinataire,PapotageListener envoyeur) {
+			destinataire.getIb().afficheMessR(mess);			
+			envoyeur.getIb().afficheMessE(mess);
+			ig.afficheMess(mess);
 	}
 
 	public ArrayList<PapotageListener> getListeBavards() {

@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 public class InterfaceBavard extends JFrame implements ActionListener {
 	
@@ -132,7 +133,7 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 	}
 	// Permet d'afficher les messages envoyes dans la zone de texte zoneMessagesE (A Faire)
 	public void afficheMessE(PapotageEvent mess) {
-	
+		zoneMessagesE.setText(mess.getSujet()+ ": "+mess.getCorps());
 				//fils_discussion = fils_discussion + mess.getSujet()+ " : "+mess.getCorps();
 				//discussion.setText( fils_discussion +"Nouveau message :");
 	}

@@ -5,6 +5,7 @@ public class Bavard implements PapotageListener {
 	private ArrayList<PapotageEvent> messagesRecus;
 	private boolean connecte = false;
 	private InterfaceBavard interfBavard = null;
+	private InterfaceBavard ib = null;
 	
 	public Bavard(String nom){
 		this.messagesEnvoyes = new ArrayList<PapotageEvent>();
@@ -54,8 +55,14 @@ public class Bavard implements PapotageListener {
 	public void setInterfBavard(InterfaceBavard interfBavard) {
 		this.interfBavard = interfBavard;
 	}
-	
-	
+
+	public void setIb(InterfaceBavard ib) {
+		this.ib = ib;
+	}
+
+	public InterfaceBavard getIb() {
+		return ib;
+	}
 	
 	
 }
