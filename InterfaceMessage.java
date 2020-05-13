@@ -120,7 +120,7 @@ public class InterfaceMessage extends JFrame implements ActionListener{
 	    	PapotageListener destinataire = getPapotageListenerListe(selected);
 	    	
 	    	this.concierge.envoieMessage(new PapotageEvent(this, zoneSujet.getText(), zoneCorps.getText()),destinataire,bavard);
-	    	System.out.println(selected);
+	    	this.dispose();
 	    	
 	    }
 	    

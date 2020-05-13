@@ -156,8 +156,8 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 	}
 	
 	// Permet d'afficher tous les messages envoyés dans la zone de Texte zoneMessages
-	public void afficheMess(PapotageEvent mess) {
-		this.message = this.message + mess.getSujet() +  " : " + mess.getCorps();
+	public void afficheMess(PapotageEvent mess, PapotageListener envoyeur, PapotageListener destinataire) {
+		this.message = this.message + envoyeur.getNom() + " à " + destinataire.getNom() + "\n Sujet : " + mess.getSujet() +  "\n" + mess.getCorps()+ "\n\n";
 		zoneMessages.setText(message);
 	}
 	

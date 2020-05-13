@@ -125,17 +125,16 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 	    }
 	}
 	
-	// Permet d'afficher les messages recus dans la zone de texte zoneMessagesR (A Faire)
-	public void afficheMessR(PapotageEvent mess) {
-		zoneMessagesR.setText(mess.getSujet()+ ": "+mess.getCorps());
-		//fils_discussion = fils_discussion +"<p>"+mess.getSujet()+" : "+mess.getCorps()+"</p>";
-		//discussion.setText("<html>"+ fils_discussion +"<br><h3>Nouveau message :</h3></html>");
+	// Permet d'afficher les messages recus dans la zone de texte zoneMessagesR
+	public void afficheMessR(PapotageEvent mess, PapotageListener envoyeur) {
+		this.messageR = this.messageR + "De "+envoyeur.getNom()+ "\n Sujet : " + mess.getSujet()+ "\n"+mess.getCorps() + "\n\n";
+		zoneMessagesR.setText(this.messageR);
 	}
-	// Permet d'afficher les messages envoyes dans la zone de texte zoneMessagesE (A Faire)
-	public void afficheMessE(PapotageEvent mess) {
-		zoneMessagesE.setText(mess.getSujet()+ ": "+mess.getCorps());
-				//fils_discussion = fils_discussion + mess.getSujet()+ " : "+mess.getCorps();
-				//discussion.setText( fils_discussion +"Nouveau message :");
+	
+	// Permet d'afficher les messages envoyes dans la zone de texte zoneMessagesE
+	public void afficheMessE(PapotageEvent mess, PapotageListener destinataire) {
+		this.messageE = this.messageE + "À "+destinataire.getNom()+ "\n Sujet : " + mess.getSujet()+ "\n" + mess.getCorps() + "\n\n";
+		zoneMessagesE.setText(this.messageE);
 	}
 	
 	// Getters et Setters

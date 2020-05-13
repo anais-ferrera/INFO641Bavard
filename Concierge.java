@@ -34,9 +34,9 @@ public class Concierge {
 	}
 	
 	public void envoieMessage(PapotageEvent mess, PapotageListener destinataire,PapotageListener envoyeur) {
-			destinataire.getIb().afficheMessR(mess);			
-			envoyeur.getIb().afficheMessE(mess);
-			ig.afficheMess(mess);
+			destinataire.getIb().afficheMessR(mess, envoyeur);			
+			envoyeur.getIb().afficheMessE(mess, destinataire);
+			ig.afficheMess(mess, envoyeur, destinataire);
 	}
 
 	public ArrayList<PapotageListener> getListeBavards() {
