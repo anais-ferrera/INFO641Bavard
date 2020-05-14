@@ -1,4 +1,3 @@
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,9 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.html.StyleSheet;
 
 
 
@@ -19,29 +16,29 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 	private JPanel panel2 = new JPanel();
 	
 	private JLabel labelDiscussion = new JLabel("Toutes les discussions :");
-	private JLabel labelConnectes = new JLabel("Bavards :");	
+	private JLabel labelConnectes = new JLabel("Bavards :");
 	private JLabel labelNom = new JLabel("Nom du bavard :");
-	
-	private String message = "";
-	
+
+	private String message="";
 	private JTextField corps = new JTextField("",10);
 	
-	private JTextArea zoneMessages = new JTextArea(15, 20);
+
+	private JTextPane zoneMessages = new JTextPane();
 	JEditorPane jEditorPane = new JEditorPane();
 	HTMLEditorKit kit = new HTMLEditorKit();
 	
 	private JButton boutonNewb = new JButton("Nouveau bavard");
 	
-	// Constructeur
 	
+	// Constructeur
 	public InterfaceGestionnaire(Concierge c) {
 		super();
-		
-		// Definition du titre et de la position de la fenetre
+	
+	    //definition du titre, det de la position de la fenetre
 		setTitle("Fenetre du concierge");
 		setLocation(1250, 200);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			
+		
 		// HTML
 		jEditorPane.setEditable(false);
 		JScrollPane scrollPane = new JScrollPane(jEditorPane);
@@ -57,10 +54,7 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
         
         jEditorPane.setText(htmlString);
         
-        
-        
-		
-		// Ajout des boutons comme ecouteurs
+        // Ajout des boutons comme ecouteurs
 		boutonNewb.addActionListener(this);
 		boutonNewb.setActionCommand("createBavard");
 		
@@ -69,7 +63,7 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 		panel2.add(corps);
 		panel2.add(boutonNewb);
 		panel2.setVisible(true);
-
+		
 		// Creation du container
 		Container mainContainer = this.getContentPane();
 		mainContainer.add(panel1);
@@ -90,15 +84,23 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 		labelDiscussion.setForeground(Color.blue.darker().darker());
 		labelConnectes.setForeground(Color.blue);
 		labelNom.setForeground(Color.darkGray);
+	    //Border border = LineBorder.createGrayLineBorder();
+		//labelDiscussion.setBorder(border);
 		
 		// Creation de la zone Messages
-		JScrollPane scrollPane2 = new JScrollPane(this.zoneMessages); 
-		scrollPane2.setBorder(border2);
-		this.zoneMessages.setEditable(false);
+	 	this.zoneMessages.setEditable(false);
+	 	this.zoneMessages.setEditorKit(kit);
+	 	JScrollPane scrollPane2 = new JScrollPane(this.zoneMessages);  
+		this.zoneMessages.setBorder(border2);
+		this.zoneMessages.setPreferredSize(new Dimension(250, 185));
+		this.zoneMessages.setMinimumSize(new Dimension(10, 10));
+
+		
 		
 		// Centrage des elements 
 		labelDiscussion.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.zoneMessages.setAlignmentX(Component.CENTER_ALIGNMENT);
+		//this.zoneBConnectes.setAlignmentX(Component.CENTER_ALIGNMENT);
 		scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 		scrollPane2.setAlignmentX(Component.CENTER_ALIGNMENT);
 		boutonNewb.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -112,6 +114,7 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 		panel1.add(labelDiscussion);
 		panel1.add(scrollPane2);
 		panel1.add(labelConnectes);
+		//panel1.add(scrollPane);
 		panel1.add(scrollPane, BorderLayout.CENTER);
 		panel1.add(panel2);
 		
@@ -125,8 +128,10 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 		iC.setIg(this);
 		
 		pack();
-		setVisible(true);	
+		setVisible(true);
+		
 	}
+	
 	
 	// Utilisation des boutons
     public void actionPerformed(ActionEvent e) {
@@ -142,28 +147,34 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
             }else if (listeNoms.contains(nomBavard)) {
             	corps.setText("");
             }else {
-	            Bavard b = concierge.generateBavard(nomBavard); // cree un nouveau bavard ayant le nom rentré dans la fenetre
-	            InterfaceBavard id = new InterfaceBavard(b);
-	            corps.setText("");
-	            b.setInterfBavard(id);
-	            id.setBavard(b);
-	            id.setConcierge(concierge);
-	            b.setIb(id);
+            	Bavard b = concierge.generateBavard(nomBavard); // cree un nouveau bavard ayant le nom rentré dans la fenetre
+            	InterfaceBavard id = new InterfaceBavard(b);
+            	corps.setText("");
+            	b.setInterfBavard(id);
+            	id.setBavard(b);
+            	id.setConcierge(concierge);
+            	b.setIb(id);
             }
         }
     }
 	
 	// Permet d'afficher tous les messages envoyés dans la zone de Texte zoneMessages
 	public void afficheMess(PapotageEvent mess, PapotageListener envoyeur, PapotageListener destinataire) {
-		this.message = this.message + envoyeur.getNom() + " à " + destinataire.getNom() + "\n Sujet : " + mess.getSujet() +  "\n" + mess.getCorps()+ "\n\n";
-		zoneMessages.setText(message);
+		String htmlString ="<html>\n"
+				+"<body>";
+		 htmlString += this.message = this.message +
+				envoyeur.getNom()+ "<b><font color=#85A5C8> à : </font></b>" + destinataire.getNom() + "<br/>"+
+				 "<b><font color=#21568F>Sujet : </font></b>" + mess.getSujet() + "<br/>" +mess.getCorps()+"<br/>";
+
+		htmlString+="</body></html>";
+		zoneMessages.setText(htmlString);
 	}
 	
-	// Permet d'afficher l'état (en ligne ou hors ligne) de tous les bavards créés dans la zone de Texte zoneBConnectes
+	// Permet d'afficher l'état (en ligne ou hors ligne) de tous les bavards crees dans la zone de Texte zoneBConnectes
 	public void afficheConnectes() {
+
 		String htmlString = "<html>\n"
-                + "<body>";
-        
+			+"<body>";
 		for (PapotageListener bavard : concierge.getListeBavards()) {
 			if (bavard.isConnecte()) {
 				bavard.getIb().afficheConnectes();
@@ -176,8 +187,8 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 		jEditorPane.setText(htmlString);
 	}
 
-	// Getters et Setters
-	
+
+    // Getters et Setters
 	public Concierge getConcierge() {
 		return concierge;
 	}
@@ -187,6 +198,6 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 		this.concierge = concierge;
 		this.concierge.setIg(this);
 	}
-	
+
+
 }
-	
