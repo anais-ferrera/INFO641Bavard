@@ -19,7 +19,6 @@ public class InterfaceConnection extends JFrame implements ActionListener {
 	private InterfaceGestionnaire ig;
 
 	// Constructeur
-	
 	public InterfaceConnection() {
 		super();
 		
@@ -30,17 +29,21 @@ public class InterfaceConnection extends JFrame implements ActionListener {
 		Font font = new Font("Arial",Font.BOLD,14);
 		label.setFont(font);
 		
-		// ajout des boutons comme ecouteurs
+		// Ajout des boutons comme ecouteurs
 		boutonConn.addActionListener(this);  
 		boutonConn.setActionCommand("signIn");
-
+		
+		// Creation des bordures
 		Border border1=  BorderFactory.createEmptyBorder(20,25,20,25);
+		
+		// Ajout des elements dans le panel
 		panel.setBorder(border1);
 		panel.add(label);
 		panel.add(corps);
 		panel.add(boutonConn);
 		setContentPane(panel);
 		
+		// Alignement des elements
 		label.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.corps.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.boutonConn.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -52,10 +55,9 @@ public class InterfaceConnection extends JFrame implements ActionListener {
 	// Utilisation des boutons
 	public void actionPerformed(ActionEvent e) {
 
-		if (e.getActionCommand().equals("signIn")){ // Si on appui sur le bouton connexion
-			
+		if (e.getActionCommand().equals("signIn")){ // Cree l'interface du bavard et le connecte	
 			String nomBavard = corps.getText();
-			for (PapotageListener bavard : ig.getConcierge().getListeBavards()) {
+			for (PapotageListener bavard : ig.getConcierge().getListeEcouteurs()) {
 				if (nomBavard.equals(bavard.getNom())) { // On regarde que le nom rentré correspond au nom d'un bavard déjà créé
 					
 					ig.getConcierge().connecteBavard(bavard); // connecte le bavard b									
@@ -67,8 +69,8 @@ public class InterfaceConnection extends JFrame implements ActionListener {
 			}	
 		}
 		
-		if (e.getActionCommand().equals("close")) {
-		this.dispose(); //ferme la fenetre
+		if (e.getActionCommand().equals("close")) { //ferme la fenetre
+		this.dispose(); 
 		}
 	}
 	

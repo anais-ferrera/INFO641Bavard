@@ -136,21 +136,21 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 	// Utilisation des boutons
     public void actionPerformed(ActionEvent e) {
         ArrayList<String> listeNoms = new ArrayList<String>();
-        //si on appui sur le bouton nouveau bavard
-        if (e.getActionCommand().equals("createBavard")){
+        
+        if (e.getActionCommand().equals("createBavard")){ // Creation d'un nouveau bavard
             for (PapotageListener pl : this.concierge.getListeEcouteurs()) {
                 listeNoms.add(pl.getNom());
             }
             String nomBavard = corps.getText();
+            
             if (nomBavard.isEmpty()) { // Verifie qu'un nom soit rentré
             	corps.setText("");
-            }else if (listeNoms.contains(nomBavard)) {
+            }else if (listeNoms.contains(nomBavard)) { // Verifie qu'un bavard n'ai pas deja le meme nom
             	corps.setText("");
             }else {
             	Bavard b = concierge.generateBavard(nomBavard); // cree un nouveau bavard ayant le nom rentré dans la fenetre
             	InterfaceBavard id = new InterfaceBavard(b);
             	corps.setText("");
-            	b.setInterfBavard(id);
             	id.setBavard(b);
             	id.setConcierge(concierge);
             	b.setIb(id);
@@ -175,7 +175,7 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 
 		String htmlString = "<html>\n"
 			+"<body>";
-		for (PapotageListener bavard : concierge.getListeBavards()) {
+		for (PapotageListener bavard : concierge.getListeEcouteurs()) {
 			if (bavard.isConnecte()) {
 				bavard.getIb().afficheConnectes();
 				htmlString +="<p>"+ bavard.getNom() + " : " + "<font color=green>en ligne</font></p>"; 
@@ -189,10 +189,10 @@ public class InterfaceGestionnaire extends JFrame implements ActionListener {
 
 
     // Getters et Setters
+	
 	public Concierge getConcierge() {
 		return concierge;
 	}
-
 
 	public void setConcierge(Concierge concierge) {
 		this.concierge = concierge;

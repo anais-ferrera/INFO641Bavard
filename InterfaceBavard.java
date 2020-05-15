@@ -17,30 +17,21 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 	private JLabel labelBavard = new JLabel("Bavard :");
 	private String messageR = "";
 	private String messageE = "";
-	private JTextArea zoneMessagesR = new JTextArea(5, 20);
-	//private JTextArea zoneMessagesE = new JTextArea(5, 20);
 	
-	private JFrame frame = new JFrame();
 	private JPanel panel = new JPanel();
 	private JButton boutonMessage = new JButton("Nouveau Message");
 	private JButton boutonDeco = new JButton("Deconnexion");
-	/*
-	 * private JLabel labelSujet = new JLabel("Sujet :"); private JLabel
-	 * labelMessage = new JLabel("Corps :"); private JTextField sujetMessage = new
-	 * JTextField("",20); private JTextField message = new JTextField("",50);
-	 */
 	private Bavard bavard;
 	private Concierge concierge;
 	
 	JTextPane zoneMessageR = new JTextPane();
 	JTextPane zoneMessageE = new JTextPane();
 	HTMLEditorKit kit = new HTMLEditorKit();
-	//private String fils_discussion ="";
-	//private JLabel discussion = new JLabel("Message");
+
 	
 	JEditorPane jEditorPane = new JEditorPane();
 	
-	
+	// Construction
 	public InterfaceBavard (Bavard b){
 		super();
 		this.bavard=b;
@@ -49,8 +40,7 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 		this.setTitle("Messagerie de "+this.bavard.getNom());
 		this.setSize(800,500);
 		this.setLocation(1050,200);
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); 
-		
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); 		
 		
 		// Mise en place des deux boutons
 		boutonMessage.addActionListener(this);
@@ -67,8 +57,6 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 		jEditorPane.setEditable(false);
 		JScrollPane scrollPane = new JScrollPane(jEditorPane);
 		jEditorPane.setEditorKit(kit);
-		
-        
         String htmlString = "<html>"
                 + "<body>"
                 + "<p></p>"
@@ -76,7 +64,6 @@ public class InterfaceBavard extends JFrame implements ActionListener {
                 + "<p></p>"
                 + "<p></p>"
                 + "</body>";
-        
         jEditorPane.setText(htmlString);
 	 	
 	    // Creation des bordures
@@ -144,34 +131,29 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 	 		
 	 	pack();
 		this.setVisible(false);
-		 
 	}
 	
 	// Utilisation des boutons
 	public void actionPerformed(ActionEvent e) {
-		// Creation d'une interface message avec le bouton newMessage
-	    if(e.getActionCommand().equals("newMessage")) {
+
+	    if(e.getActionCommand().equals("newMessage")) { // Creation d'une interfaceMessage
 	    	InterfaceMessage iM = new InterfaceMessage(bavard,concierge);
 				iM.setConcierge(concierge);
 	    }
-	    // Concierge deconnecte le bavard avec le bouton deconnexion
-	    if(e.getActionCommand().equals("deconnexion")) {
+	  
+	    if(e.getActionCommand().equals("deconnexion")) { // Concierge deconnecte le bavard
 	    	this.concierge.deconnecteBavard(bavard);
-	    	//concierge.removeEcouteur(bavard);
 	    	this.dispose();
 	    }
-	    // Si le bavard ferme la fenetre on deconnecte le bavard
-	    if(e.getActionCommand().equals(EXIT_ON_CLOSE)) {
+	    
+	    if(e.getActionCommand().equals(EXIT_ON_CLOSE)) { // Si le bavard ferme la fenetre on deconnecte le bavard
 	    	this.concierge.deconnecteBavard(bavard);
-	    	//concierge.removeEcouteur(bavard);
 	    	this.dispose();
 	    }
 	}
-	
 
 	// Permet d'afficher les messages recus dans la zone de texte zoneMessagesR
 	public void afficheMessR(PapotageEvent mess, PapotageListener envoyeur) {
-		
 		String htmlString ="<html>\n"
 				+"<body>";
 		 htmlString += this.messageR = this.messageR +
@@ -191,13 +173,14 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 		zoneMessageE.setText(htmlString);
 	}
 	
+	// Permet d'afficher les personnes connectes
 	public void afficheConnectes() {
 		String htmlString = "<html>"
                 			+ "<body>";
-		if (concierge.getListeBavards().size()==1) {
+		if (concierge.getListeEcouteurs().size()==1) {
 			htmlString += "<p><center><font color=#666666>Il n'y a pas encore d'utilisateur</font></center></p>";
 		}else {
-			for (PapotageListener bavard : concierge.getListeBavards()) {
+			for (PapotageListener bavard : concierge.getListeEcouteurs()) {
 				if (!bavard.getNom().equals(this.bavard.getNom())){
 					if (bavard.isConnecte()) {
 						htmlString +="<p>"+ bavard.getNom() + " : " + "<font color=green>en ligne</font></p>"; 
@@ -210,6 +193,7 @@ public class InterfaceBavard extends JFrame implements ActionListener {
 		htmlString += "</body></html>";
 		jEditorPane.setText(htmlString);
 	}
+	
 	// Getters et Setters
 	
 	public Bavard getBavard() {

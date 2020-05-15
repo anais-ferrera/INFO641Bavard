@@ -7,8 +7,6 @@ public class Main {
 
 		//ouverture de la fenetre du concierge 
 		InterfaceGestionnaire ig = new InterfaceGestionnaire(c);
-		
-		
 	}
 
 }
